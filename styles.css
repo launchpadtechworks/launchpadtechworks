@@ -236,12 +236,11 @@ h1 {
 .course-hero h1 em { color: #ffce7a; font-style: normal; }
 .course-hero > p:not(.eyebrow) { max-width: 500px; margin: 28px 0; font-size: 19px; font-weight: 600; line-height: 1.4; }
 
-.student-orbit { position: absolute; right: max(4vw, calc((100vw - 1180px) / 2)); bottom: 5px; width: min(38vw, 520px); height: min(42vw, 540px); }
-.student-orbit::before { content: ""; position: absolute; inset: 17% 12% 13%; border: 1px dashed rgb(255 206 122 / 68%); border-radius: 48% 52% 45% 55%; transform: rotate(-18deg); }
+.student-orbit { position: absolute; right: max(4vw, calc((100vw - 1180px) / 2)); bottom: 20px; width: min(40vw, 555px); height: min(43vw, 550px); }
 .orbit-photo { position: absolute; z-index: 1; border: 6px solid #fff7eb; border-radius: 50%; object-fit: cover; box-shadow: 7px 7px 0 #e8503a; }
-.orbit-photo-main { right: 0; bottom: 0; width: 43%; height: 43%; object-position: 50% 38%; background: #ffce7a; }
-.orbit-photo-code { top: 0; right: 17%; width: 30%; height: 30%; object-position: 54% 50%; }
-.orbit-photo-study { bottom: 8%; left: 0; width: 29%; height: 29%; object-position: 50% 41%; }
+.orbit-photo-main { right: 0; bottom: 0; width: 42%; height: 42%; object-position: 50% 38%; background: #ffce7a; }
+.orbit-photo-code { top: 1%; right: 4%; width: 29%; height: 29%; object-position: 54% 50%; }
+.orbit-photo-study { bottom: 8%; left: 3%; width: 28%; height: 28%; object-position: 50% 41%; }
 
 .scroll-cue {
   display: inline-flex;
