@@ -1,57 +1,124 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-// Replace this with the Google Form URL when it is ready.
-const GOOGLE_FORM_URL = "https://forms.gle/PASTE_YOUR_FORM_ID_HERE";
+const courseDays = [
+  ["01", "Meet Your AI Toolkit", "Get comfortable with the tools, language, and learning flow before you build."],
+  ["02", "Teach a Car to Make Decisions", "See how data, patterns, and choices turn into real machine learning."],
+  ["03", "Search Like a Machine", "Learn the core ideas that help computers find useful answers."],
+  ["04", "Classify Anything", "Turn what you have learned into a small, confident first project."],
+];
+
+function CoursePage({ onBack }) {
+  const [questionSent, setQuestionSent] = useState(false);
+
+  useEffect(() => window.scrollTo({ top: 0, behavior: "smooth" }), []);
+
+  return (
+    <main className="course-page">
+      <header className="course-nav">
+        <button className="brand-button" onClick={onBack}>Launchpad <span>Techworks</span></button>
+        <a href="#questions" className="nav-question">Questions first</a>
+      </header>
+
+      <section className="course-hero" id="overview">
+        <p className="eyebrow">Your starting line</p>
+        <h1>Build the basics.<br /><em>Then take off.</em></h1>
+        <p>Short, clear lessons that replace syllabus stress with small wins you can feel.</p>
+        <a href="#roadmap" className="scroll-cue">Explore the course <span>↓</span></a>
+      </section>
+
+      <section className="course-section" id="roadmap">
+        <div className="section-heading">
+          <p className="eyebrow">The roadmap</p>
+          <h2>Four steps. No fog.</h2>
+          <p>Start from zero, ask why, and leave each session knowing exactly what clicked.</p>
+        </div>
+        <div className="day-grid">
+          {courseDays.map(([day, title, detail]) => (
+            <article className="day-card" key={day}>
+              <span className="day-number">Day {day}</span>
+              <h3>{title}</h3>
+              <p>{detail}</p>
+              <span className="card-arrow" aria-hidden="true">↘</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="course-section outcomes-section">
+        <div className="outcome-card">
+          <p className="eyebrow">By the end</p>
+          <h2>You won&apos;t just memorise.<br />You&apos;ll <span>understand.</span></h2>
+          <ul>
+            <li>A clear mental map of the fundamentals</li>
+            <li>Simple ways to explain tricky ideas</li>
+            <li>A first project you can be proud of</li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="course-section faq-section" id="questions">
+        <div className="section-heading">
+          <p className="eyebrow">Ask before you jump</p>
+          <h2>Nothing should feel unclear.</h2>
+          <p>Take a look at the usual questions. If yours is different, write it down below.</p>
+        </div>
+        <div className="faq-list">
+          <details open>
+            <summary>Is this beginner friendly?<span>+</span></summary>
+            <p>Yes. This is built to make the foundations feel simple before the pace picks up.</p>
+          </details>
+          <details>
+            <summary>Do I need to know coding first?<span>+</span></summary>
+            <p>No. We start with the ideas first, then connect them to the tools step by step.</p>
+          </details>
+          <details>
+            <summary>What if I get stuck?<span>+</span></summary>
+            <p>Ask early. The course is designed around small checkpoints, so you never have to guess alone.</p>
+          </details>
+        </div>
+        <form className="question-form" onSubmit={(event) => { event.preventDefault(); setQuestionSent(true); }}>
+          <label htmlFor="student-question">Still have a question?</label>
+          <div className="question-row">
+            <input id="student-question" name="question" required placeholder="Type it here — there are no silly questions." />
+            <button type="submit">Ask us <span>→</span></button>
+          </div>
+          {questionSent && <p className="form-note">Your question is ready. Send us your question-form link and we&apos;ll connect this box to your team inbox.</p>}
+        </form>
+      </section>
+
+      <footer className="course-footer">
+        <button className="back-to-start" onClick={onBack}>← Back to the start</button>
+        <p>Strong roots. Bigger ideas.</p>
+      </footer>
+    </main>
+  );
+}
 
 export default function LaunchpadDashboard() {
   const [isRevealed, setIsRevealed] = useState(false);
-  const videoRef = useRef(null);
+  const [showCourses, setShowCourses] = useState(false);
 
   useEffect(() => {
-    const revealFallback = window.setTimeout(() => setIsRevealed(true), 3400);
-    videoRef.current?.play().catch(() => setIsRevealed(true));
-
-    return () => window.clearTimeout(revealFallback);
+    const introTimer = window.setTimeout(() => setIsRevealed(true), 3000);
+    return () => window.clearTimeout(introTimer);
   }, []);
+
+  if (showCourses) return <CoursePage onBack={() => setShowCourses(false)} />;
 
   return (
     <main className={`landing-page ${isRevealed ? "is-revealed" : ""}`}>
-      <video
-        ref={videoRef}
-        className="wall-animation"
-        autoPlay
-        muted
-        playsInline
-        preload="auto"
-        onEnded={() => setIsRevealed(true)}
-        aria-label="Illustration of a person hiding in a red brick wall"
-      >
-        <source src="/syllabus-wall.mp4" type="video/mp4" />
-      </video>
-
+      <img className="wall-animation" src="/syllabus-wall.gif" alt="" aria-hidden="true" />
       <div className="hero-shade" aria-hidden="true" />
 
       <section className="hero-content" aria-labelledby="hero-heading">
         <p className="eyebrow">Launchpad Techworks</p>
-        <h1 id="hero-heading">
-          Don&apos;t let the syllabus<br />
-          take you down.
-        </h1>
-        <p className="subheadline">
-          Get your basics clear first. Build <span>strong roots.</span>
-        </p>
+        <h1 id="hero-heading">Don&apos;t let the syllabus<br />take you down.</h1>
+        <p className="subheadline">Get your basics clear first. Build <span>strong roots.</span></p>
       </section>
 
-      <a
-        className="start-button"
-        href={GOOGLE_FORM_URL}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Start now — opens the registration form in a new tab"
-      >
+      <button className="start-button" onClick={() => setShowCourses(true)}>
         Start Now <span aria-hidden="true">↗</span>
-      </a>
-
+      </button>
       <p className="intro-label" aria-hidden="true">A better way in starts here.</p>
     </main>
   );
