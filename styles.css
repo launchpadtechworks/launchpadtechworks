@@ -31,7 +31,7 @@ html { scroll-behavior: smooth; }
   background: #1b2340;
 }
 
-.wall-animation,
+.wall-picture,
 .hero-shade {
   position: absolute;
   inset: 0;
@@ -40,11 +40,14 @@ html { scroll-behavior: smooth; }
 }
 
 .wall-animation {
-  z-index: -3;
+  height: 100%;
+  width: 100%;
   object-fit: cover;
   object-position: center;
   transform: scale(1.015);
 }
+
+.wall-picture { z-index: -3; background: #e8503a; }
 
 .hero-shade {
   z-index: -2;
@@ -154,7 +157,7 @@ h1 {
   text-transform: uppercase;
 }
 
-.is-revealed .wall-animation {
+.is-revealed .wall-picture {
   opacity: .62;
   transition: opacity 700ms ease;
 }
@@ -209,6 +212,8 @@ h1 {
 }
 
 .course-hero {
+  position: relative;
+  overflow: hidden;
   min-height: 59svh;
   padding: clamp(54px, 11vw, 136px) max(24px, calc((100vw - 1180px) / 2)) 70px;
   color: #fff7eb;
@@ -217,6 +222,8 @@ h1 {
 }
 
 .course-hero .eyebrow { color: #ffce7a; }
+
+.course-hero > :not(.student-orbit) { position: relative; z-index: 1; }
 
 .course-hero h1,
 .section-heading h2,
@@ -229,6 +236,28 @@ h1 {
 .course-hero h1 { max-width: 800px; font-size: clamp(48px, 8vw, 105px); }
 .course-hero h1 em { color: #ffce7a; font-style: normal; }
 .course-hero > p:not(.eyebrow) { max-width: 500px; margin: 28px 0; font-size: 19px; font-weight: 600; line-height: 1.4; }
+
+.program-chip {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  padding: 9px 13px;
+  border: 1px solid rgb(255 247 235 / 50%);
+  border-radius: 999px;
+  color: #ffce7a;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.program-chip span { color: #e8503a; }
+
+.student-orbit { position: absolute; right: max(4vw, calc((100vw - 1180px) / 2)); bottom: -44px; width: min(38vw, 460px); height: min(38vw, 460px); }
+.orbit-photo { position: absolute; border: 6px solid #fff7eb; border-radius: 50%; object-fit: cover; box-shadow: 7px 7px 0 #e8503a; }
+.orbit-photo-main { right: 15%; bottom: 3%; width: 58%; height: 58%; object-position: 50% 38%; background: #ffce7a; }
+.orbit-photo-code { top: 7%; right: 6%; width: 36%; height: 36%; object-position: 54% 50%; }
+.orbit-photo-study { bottom: 3%; left: 0; width: 32%; height: 32%; object-position: 50% 41%; }
 
 .scroll-cue {
   display: inline-flex;
@@ -312,6 +341,7 @@ h1 {
   .course-hero { min-height: 63svh; padding: 74px 20px 54px; background-image: radial-gradient(circle at 89% 11%, #e8503a 0 8%, transparent 8.2%), radial-gradient(circle at 76% 82%, #ffce7a 0 6%, transparent 6.2%); }
   .course-hero h1 { font-size: clamp(44px, 13vw, 62px); }
   .course-hero > p:not(.eyebrow) { margin: 22px 0; font-size: 17px; }
+  .student-orbit { right: -28px; bottom: -58px; width: 255px; height: 255px; opacity: .42; }
   .course-section { padding: 75px 0; }
   .day-grid { grid-template-columns: 1fr; margin-top: 34px; }
   .day-card { min-height: 211px; }

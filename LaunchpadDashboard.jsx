@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 const courseDays = [
-  ["01", "Meet Your AI Toolkit", "Get comfortable with the tools, language, and learning flow before you build."],
-  ["02", "Teach a Car to Make Decisions", "See how data, patterns, and choices turn into real machine learning."],
-  ["03", "Search Like a Machine", "Learn the core ideas that help computers find useful answers."],
-  ["04", "Classify Anything", "Turn what you have learned into a small, confident first project."],
+  ["Week 01", "Meet Your AI Toolkit", "Get comfortable with the tools, language, and learning flow before you build."],
+  ["Week 01", "Teach a Car to Make Decisions", "See how data, patterns, and choices turn into real machine learning."],
+  ["Week 02", "Search Like a Machine", "Learn the core ideas that help computers find useful answers."],
+  ["Week 02", "Classify Anything", "Turn what you have learned into a small, confident first project."],
 ];
 
 function CoursePage({ onBack }) {
@@ -22,20 +22,26 @@ function CoursePage({ onBack }) {
       <section className="course-hero" id="overview">
         <p className="eyebrow">Your starting line</p>
         <h1>Build the basics.<br /><em>Then take off.</em></h1>
-        <p>Short, clear lessons that replace syllabus stress with small wins you can feel.</p>
+        <p>In two focused weeks, turn syllabus stress into strong basics and small wins you can feel.</p>
+        <div className="program-chip">2 weeks <span>•</span> Stronger basics <span>•</span> Start from zero</div>
+        <div className="student-orbit" aria-label="Students learning with technology">
+          <img className="orbit-photo orbit-photo-main" src="/student-laptop.webp" alt="Student learning on a laptop" />
+          <img className="orbit-photo orbit-photo-code" src="/student-code.webp" alt="Student coding on a laptop" />
+          <img className="orbit-photo orbit-photo-study" src="/student-study.webp" alt="Student studying with headphones" />
+        </div>
         <a href="#roadmap" className="scroll-cue">Explore the course <span>↓</span></a>
       </section>
 
       <section className="course-section" id="roadmap">
         <div className="section-heading">
           <p className="eyebrow">The roadmap</p>
-          <h2>Four steps. No fog.</h2>
+          <h2>Two weeks. No fog.</h2>
           <p>Start from zero, ask why, and leave each session knowing exactly what clicked.</p>
         </div>
         <div className="day-grid">
           {courseDays.map(([day, title, detail]) => (
             <article className="day-card" key={day}>
-              <span className="day-number">Day {day}</span>
+              <span className="day-number">{day}</span>
               <h3>{title}</h3>
               <p>{detail}</p>
               <span className="card-arrow" aria-hidden="true">↘</span>
@@ -107,7 +113,10 @@ export default function LaunchpadDashboard() {
 
   return (
     <main className={`landing-page ${isRevealed ? "is-revealed" : ""}`}>
-      <img className="wall-animation" src="/syllabus-wall.gif" alt="" aria-hidden="true" />
+      <picture className="wall-picture">
+        <source srcSet="/syllabus-wall.webp" type="image/webp" />
+        <img className="wall-animation" src="/syllabus-wall.gif" alt="" aria-hidden="true" fetchPriority="high" />
+      </picture>
       <div className="hero-shade" aria-hidden="true" />
 
       <section className="hero-content" aria-labelledby="hero-heading">
