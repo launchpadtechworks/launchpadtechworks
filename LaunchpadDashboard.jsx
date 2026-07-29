@@ -61,8 +61,8 @@ function UnlockScreen({ onDone }) {
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = window.setTimeout(() => setIsFading(true), 6000);
-    const finishTimer = window.setTimeout(onDone, 6700);
+    const fadeTimer = window.setTimeout(() => setIsFading(true), 7200);
+    const finishTimer = window.setTimeout(onDone, 7900);
     return () => {
       window.clearTimeout(fadeTimer);
       window.clearTimeout(finishTimer);
@@ -71,7 +71,9 @@ function UnlockScreen({ onDone }) {
 
   return (
     <main className={`unlock-screen ${isFading ? "is-fading" : ""}`}>
-      <img src="/dashboard-unlock.webp" alt="Animation of a student breaking free from the wall" />
+      <video autoPlay muted playsInline preload="auto" aria-label="Animation of a student breaking free from the wall">
+        <source src="/dashboard-unlock.mp4" type="video/mp4" />
+      </video>
       <p>Your learning space is opening…</p>
     </main>
   );
