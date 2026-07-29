@@ -71,9 +71,7 @@ function UnlockScreen({ onDone }) {
 
   return (
     <main className={`unlock-screen ${isFading ? "is-fading" : ""}`}>
-      <video autoPlay muted playsInline preload="auto" aria-label="Animation of a student breaking free from the wall">
-        <source src="/dashboard-unlock.mp4" type="video/mp4" />
-      </video>
+      <img src="/dashboard-unlock.gif" alt="Animation of a student breaking free from the wall" />
       <p>Your learning space is opening…</p>
     </main>
   );
@@ -324,9 +322,12 @@ export default function LaunchpadDashboard() {
   return (
     <main className={`landing-page ${isRevealed ? "is-revealed" : ""}`}>
       <div className="wall-picture" aria-hidden="true">
-        <video className="wall-animation" autoPlay muted playsInline preload="auto">
-          <source src="/syllabus-wall.mp4" type="video/mp4" />
-        </video>
+        <img
+          className="wall-animation"
+          src={isRevealed ? "/syllabus-wall-end.png" : "/syllabus-wall.gif"}
+          alt=""
+          fetchPriority="high"
+        />
       </div>
       <div className="hero-shade" aria-hidden="true" />
 

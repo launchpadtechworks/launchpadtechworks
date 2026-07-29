@@ -197,7 +197,7 @@ h1 {
 
 .unlock-screen { position: relative; overflow: hidden; padding: 0; background: #1b2340; opacity: 1; transition: opacity 700ms ease; }
 .unlock-screen.is-fading { opacity: 0; }
-.unlock-screen video { width: 100%; height: 100svh; object-fit: cover; }
+.unlock-screen img { width: 100%; height: 100svh; object-fit: cover; }
 .unlock-screen p { position: absolute; bottom: 8%; margin: 0; color: #fff7eb; font-family: "Barlow Condensed", sans-serif; font-size: clamp(20px, 4vw, 30px); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 
 .student-dashboard { min-height: 100svh; color: #1b2340; background: #fff7eb; animation: dashboard-arrive 650ms ease both; }
