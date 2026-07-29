@@ -58,13 +58,19 @@ function LoginScreen({ onClose, onSuccess }) {
 }
 
 function UnlockScreen({ onDone }) {
+  const [isFading, setIsFading] = useState(false);
+
   useEffect(() => {
-    const timer = window.setTimeout(onDone, 3000);
-    return () => window.clearTimeout(timer);
+    const fadeTimer = window.setTimeout(() => setIsFading(true), 4800);
+    const finishTimer = window.setTimeout(onDone, 5500);
+    return () => {
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(finishTimer);
+    };
   }, [onDone]);
 
   return (
-    <main className="unlock-screen">
+    <main className={`unlock-screen ${isFading ? "is-fading" : ""}`}>
       <img src="/dashboard-unlock.webp" alt="Animation of a student breaking free from the wall" />
       <p>Your learning space is opening…</p>
     </main>
@@ -72,6 +78,7 @@ function UnlockScreen({ onDone }) {
 }
 
 function PasswordSetupScreen({ onComplete }) {
+  const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -80,6 +87,10 @@ function PasswordSetupScreen({ onComplete }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setError("");
+    if (displayName.trim().length < 2) {
+      setError("Choose the name you want to see in your dashboard.");
+      return;
+    }
     if (password.length < 8) {
       setError("Choose a password with at least 8 characters.");
       return;
@@ -91,7 +102,7 @@ function PasswordSetupScreen({ onComplete }) {
     setIsSubmitting(true);
     const { data, error: updateError } = await supabase.auth.updateUser({
       password,
-      data: { password_set: true },
+      data: { password_set: true, display_name: displayName.trim() },
     });
     setIsSubmitting(false);
     if (updateError) {
@@ -106,8 +117,9 @@ function PasswordSetupScreen({ onComplete }) {
       <section className="login-card">
         <p className="eyebrow">One last step</p>
         <h1>Make it yours.</h1>
-        <p>Create a password for your Launchpad student account. You&apos;ll use it every time you come back.</p>
+        <p>Choose the name and password you&apos;ll use for your Launchpad student account.</p>
         <form onSubmit={handleSubmit}>
+          <label>Display name<input type="text" value={displayName} onChange={(event) => setDisplayName(event.target.value)} minLength="2" maxLength="40" required autoComplete="nickname" placeholder="What should we call you?" /></label>
           <label>Choose password<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength="8" required autoComplete="new-password" /></label>
           <label>Confirm password<input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} minLength="8" required autoComplete="new-password" /></label>
           {error && <p className="login-error" role="alert">{error}</p>}
@@ -120,14 +132,14 @@ function PasswordSetupScreen({ onComplete }) {
 
 function StudentDashboard({ session, onSignOut }) {
   const [activeDay, setActiveDay] = useState(1);
-  const studentName = session.user.email?.split("@")[0] ?? "Student";
+  const studentName = session.user.user_metadata?.display_name ?? session.user.email?.split("@")[0] ?? "Student";
   const lessons = ["Artificial Intelligence", "Data Science", "AI & Machine Learning", "Python", "Project brief"];
 
   return (
     <main className="student-dashboard">
       <header className="dashboard-nav">
         <div className="dashboard-brand">Launchpad <span>Techworks</span></div>
-        <div><span className="student-email">{session.user.email}</span><button onClick={onSignOut}>Log out</button></div>
+        <div><span className="student-email">{studentName}</span><button onClick={onSignOut}>Log out</button></div>
       </header>
       <section className="dashboard-welcome">
         <p className="eyebrow">Student dashboard</p>
