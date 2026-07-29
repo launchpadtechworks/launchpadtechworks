@@ -71,6 +71,53 @@ function UnlockScreen({ onDone }) {
   );
 }
 
+function PasswordSetupScreen({ onComplete }) {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+    if (password.length < 8) {
+      setError("Choose a password with at least 8 characters.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Those passwords do not match yet.");
+      return;
+    }
+    setIsSubmitting(true);
+    const { data, error: updateError } = await supabase.auth.updateUser({
+      password,
+      data: { password_set: true },
+    });
+    setIsSubmitting(false);
+    if (updateError) {
+      setError(updateError.message);
+      return;
+    }
+    onComplete(data.user);
+  }
+
+  return (
+    <main className="login-page password-setup-page">
+      <section className="login-card">
+        <p className="eyebrow">One last step</p>
+        <h1>Make it yours.</h1>
+        <p>Create a password for your Launchpad student account. You&apos;ll use it every time you come back.</p>
+        <form onSubmit={handleSubmit}>
+          <label>Choose password<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength="8" required autoComplete="new-password" /></label>
+          <label>Confirm password<input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} minLength="8" required autoComplete="new-password" /></label>
+          {error && <p className="login-error" role="alert">{error}</p>}
+          <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Saving…" : "Save password"} <span>→</span></button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
 function StudentDashboard({ session, onSignOut }) {
   const [activeDay, setActiveDay] = useState(1);
   const studentName = session.user.email?.split("@")[0] ?? "Student";
@@ -248,6 +295,9 @@ export default function LaunchpadDashboard() {
   }
 
   if (session) {
+    if (!session.user.user_metadata?.password_set) {
+      return <PasswordSetupScreen onComplete={(user) => { setSession((current) => ({ ...current, user })); setIsUnlocking(true); }} />;
+    }
     return isUnlocking
       ? <UnlockScreen onDone={() => setIsUnlocking(false)} />
       : <StudentDashboard session={session} onSignOut={handleSignOut} />;
