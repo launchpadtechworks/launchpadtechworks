@@ -61,8 +61,8 @@ function UnlockScreen({ onDone }) {
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = window.setTimeout(() => setIsFading(true), 7200);
-    const finishTimer = window.setTimeout(onDone, 7900);
+    const fadeTimer = window.setTimeout(() => setIsFading(true), 5800);
+    const finishTimer = window.setTimeout(onDone, 6500);
     return () => {
       window.clearTimeout(fadeTimer);
       window.clearTimeout(finishTimer);
@@ -323,10 +323,11 @@ export default function LaunchpadDashboard() {
 
   return (
     <main className={`landing-page ${isRevealed ? "is-revealed" : ""}`}>
-      <picture className="wall-picture">
-        <source srcSet="/syllabus-wall.webp" type="image/webp" />
-        <img className="wall-animation" src="/syllabus-wall.gif" alt="" aria-hidden="true" fetchPriority="high" />
-      </picture>
+      <div className="wall-picture" aria-hidden="true">
+        <video className="wall-animation" autoPlay muted playsInline preload="auto">
+          <source src="/syllabus-wall.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div className="hero-shade" aria-hidden="true" />
 
       <section className="hero-content" aria-labelledby="hero-heading">
