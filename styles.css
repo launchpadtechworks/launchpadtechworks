@@ -291,16 +291,19 @@ h1 {
 .day-number { font-family: "Barlow Condensed", sans-serif; font-size: clamp(25px, 3vw, 38px); font-weight: 900; letter-spacing: -.035em; line-height: .98; text-transform: uppercase; }
 .card-arrow { flex: 0 0 auto; display: grid; place-items: center; width: 37px; height: 37px; border: 2px solid currentColor; border-radius: 50%; font-size: 27px; font-weight: 400; line-height: 1; transition: transform 260ms ease; }
 .is-open .card-arrow { transform: rotate(45deg); }
-.domain-details { max-height: 0; padding: 0 26px; overflow: hidden; opacity: 0; transition: max-height 320ms ease, padding 320ms ease, opacity 220ms ease; }
-.is-open .domain-details { max-height: 180px; padding: 0 26px 26px; opacity: 1; }
-.domain-details div { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; font-family: "Barlow Condensed", sans-serif; font-size: 15px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.domain-details div span { padding: 4px 7px; color: #1b2340; background: #fff7eb; }
-.domain-details p { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; }
-.project-card { position: relative; grid-column: 1 / -1; min-height: 206px; padding: 30px; overflow: hidden; color: #fff7eb; background: #1b2340; box-shadow: 5px 5px 0 #e8503a; }
-.project-card .day-number { color: #ffce7a; font-size: 17px; letter-spacing: .09em; }
-.project-card h3 { margin: 23px 0 10px; font-family: "Archivo Black", sans-serif; font-size: clamp(28px, 3vw, 43px); letter-spacing: -.055em; line-height: .98; }
-.project-card p { max-width: 510px; margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4; }
-.project-card > span:last-child { position: absolute; right: 30px; bottom: 18px; color: #e8503a; font-size: 75px; }
+.domain-details { max-height: 0; padding: 0 26px; overflow: hidden; opacity: 0; transition: max-height 520ms ease, padding 420ms ease, opacity 260ms ease; }
+.is-open .domain-details { max-height: 700px; padding: 0 26px 28px; opacity: 1; }
+.domain-intro { margin: 0 0 18px; font-size: 15px; font-weight: 600; line-height: 1.35; }
+.road-title { margin-bottom: 12px; color: inherit; font-family: "Barlow Condensed", sans-serif; font-size: 14px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.learning-road { position: relative; display: grid; gap: 11px; margin: 0; padding: 0; list-style: none; }
+.learning-road::before { content: ""; position: absolute; top: 17px; bottom: 17px; left: 15px; border-left: 2px dashed currentColor; opacity: .48; }
+.learning-road li { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; }
+.road-dot { display: grid; place-items: center; flex: 0 0 31px; width: 31px; height: 31px; border: 2px solid currentColor; border-radius: 50%; color: #1b2340; background: #fff7eb; font-family: "Barlow Condensed", sans-serif; font-size: 14px; font-weight: 900; }
+.learning-road li > div { display: flex; flex-wrap: wrap; gap: 5px 9px; align-items: baseline; }
+.learning-road strong { font-family: "Barlow Condensed", sans-serif; font-size: 16px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+.learning-road li > div > span { font-size: 14px; font-weight: 600; }
+.learning-road .project-step .road-dot { color: #fff7eb; background: #1b2340; }
+.day-card:nth-child(4) .learning-road .project-step .road-dot { color: #e8503a; background: #fff7eb; }
 
 .outcomes-section { padding-top: 0; }
 .outcome-card { padding: clamp(35px, 7vw, 85px); border-radius: 26px; color: #fff7eb; background: #e8503a; }
@@ -363,7 +366,6 @@ h1 {
   .course-section { padding: 75px 0; }
   .day-grid { grid-template-columns: 1fr; margin-top: 34px; }
   .day-card, .domain-toggle { min-height: 144px; }
-  .project-card { min-height: 193px; padding: 25px; }
   .outcomes-section, .faq-section { padding-top: 0; }
   .outcome-card { border-radius: 17px; }
   .outcome-card ul { grid-template-columns: 1fr; gap: 17px; margin-top: 33px; }
