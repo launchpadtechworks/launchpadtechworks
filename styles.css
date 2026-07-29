@@ -283,14 +283,24 @@ h1 {
 .section-heading > p:last-child { margin: 20px 0 0; color: #5c6071; font-size: 18px; font-weight: 600; line-height: 1.45; }
 
 .day-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 46px; }
-.day-card { position: relative; min-height: 235px; padding: 26px; border: 2px solid #1b2340; background: #fffdf8; box-shadow: 5px 5px 0 #1b2340; transition: transform 220ms ease, box-shadow 220ms ease; }
+.day-card { position: relative; min-height: 170px; border: 2px solid #1b2340; background: #fffdf8; box-shadow: 5px 5px 0 #1b2340; transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease; }
 .day-card:nth-child(2), .day-card:nth-child(3) { background: #ffce7a; }
 .day-card:nth-child(4) { background: #e8503a; color: #fff7eb; }
 .day-card:hover { box-shadow: 10px 10px 0 #1b2340; transform: translate(-4px, -4px); }
-.day-number { font-family: "Barlow Condensed", sans-serif; font-size: 17px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
-.day-card h3 { max-width: 330px; margin: 27px 0 12px; font-family: "Archivo Black", sans-serif; font-size: clamp(25px, 3vw, 38px); letter-spacing: -.055em; line-height: .98; }
-.day-card p { max-width: 365px; margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; }
-.card-arrow { position: absolute; right: 21px; bottom: 16px; font-size: 31px; }
+.domain-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 170px; padding: 26px; border: 0; color: inherit; background: transparent; text-align: left; }
+.day-number { font-family: "Barlow Condensed", sans-serif; font-size: clamp(25px, 3vw, 38px); font-weight: 900; letter-spacing: -.035em; line-height: .98; text-transform: uppercase; }
+.card-arrow { flex: 0 0 auto; display: grid; place-items: center; width: 37px; height: 37px; border: 2px solid currentColor; border-radius: 50%; font-size: 27px; font-weight: 400; line-height: 1; transition: transform 260ms ease; }
+.is-open .card-arrow { transform: rotate(45deg); }
+.domain-details { max-height: 0; padding: 0 26px; overflow: hidden; opacity: 0; transition: max-height 320ms ease, padding 320ms ease, opacity 220ms ease; }
+.is-open .domain-details { max-height: 180px; padding: 0 26px 26px; opacity: 1; }
+.domain-details div { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; font-family: "Barlow Condensed", sans-serif; font-size: 15px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.domain-details div span { padding: 4px 7px; color: #1b2340; background: #fff7eb; }
+.domain-details p { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; }
+.project-card { position: relative; grid-column: 1 / -1; min-height: 206px; padding: 30px; overflow: hidden; color: #fff7eb; background: #1b2340; box-shadow: 5px 5px 0 #e8503a; }
+.project-card .day-number { color: #ffce7a; font-size: 17px; letter-spacing: .09em; }
+.project-card h3 { margin: 23px 0 10px; font-family: "Archivo Black", sans-serif; font-size: clamp(28px, 3vw, 43px); letter-spacing: -.055em; line-height: .98; }
+.project-card p { max-width: 510px; margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4; }
+.project-card > span:last-child { position: absolute; right: 30px; bottom: 18px; color: #e8503a; font-size: 75px; }
 
 .outcomes-section { padding-top: 0; }
 .outcome-card { padding: clamp(35px, 7vw, 85px); border-radius: 26px; color: #fff7eb; background: #e8503a; }
@@ -352,7 +362,8 @@ h1 {
   .student-orbit { right: -22px; bottom: -25px; width: 255px; height: 310px; opacity: .34; }
   .course-section { padding: 75px 0; }
   .day-grid { grid-template-columns: 1fr; margin-top: 34px; }
-  .day-card { min-height: 211px; }
+  .day-card, .domain-toggle { min-height: 144px; }
+  .project-card { min-height: 193px; padding: 25px; }
   .outcomes-section, .faq-section { padding-top: 0; }
   .outcome-card { border-radius: 17px; }
   .outcome-card ul { grid-template-columns: 1fr; gap: 17px; margin-top: 33px; }

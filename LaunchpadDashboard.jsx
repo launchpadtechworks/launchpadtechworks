@@ -3,14 +3,15 @@ import { useEffect, useState } from "react";
 const ENROLLMENT_FORM_URL = "https://forms.gle/pQJJmMFLYrgxboaH6";
 
 const courseDays = [
-  ["Day 01", "Meet Your AI Toolkit", "Get comfortable with the tools, language, and learning flow before you build."],
-  ["Day 02", "Teach a Car to Make Decisions", "See how data, patterns, and choices turn into real machine learning."],
-  ["Day 03", "Search Like a Machine", "Learn the core ideas that help computers find useful answers."],
-  ["Day 04", "Classify Anything", "Turn what you have learned into a small, confident first project."],
+  { day: "Day 01", title: "Artificial Intelligence", detail: "Meet the ideas behind AI and learn how it appears in everyday life." },
+  { day: "Day 02", title: "AI Data Science", detail: "See how useful data is collected, understood, and turned into clear answers." },
+  { day: "Day 03", title: "AI Machine Learning", detail: "Explore how patterns help a machine learn, predict, and make decisions." },
+  { day: "Day 04", title: "Python", detail: "Build confidence with the simple code that helps bring AI ideas to life." },
 ];
 
 function CoursePage({ onBack }) {
   const [questionSent, setQuestionSent] = useState(false);
+  const [openDomain, setOpenDomain] = useState(null);
 
   useEffect(() => window.scrollTo({ top: 0, behavior: "smooth" }), []);
 
@@ -43,14 +44,34 @@ function CoursePage({ onBack }) {
           <p>Start from zero, ask why, and leave each session knowing exactly what clicked.</p>
         </div>
         <div className="day-grid">
-          {courseDays.map(([day, title, detail]) => (
-            <article className="day-card" key={day}>
-              <span className="day-number">{day}</span>
-              <h3>{title}</h3>
-              <p>{detail}</p>
-              <span className="card-arrow" aria-hidden="true">↘</span>
-            </article>
-          ))}
+          {courseDays.map(({ day, title, detail }) => {
+            const isOpen = openDomain === day;
+            return (
+              <article className={`day-card ${isOpen ? "is-open" : ""}`} key={day}>
+                <button
+                  className="domain-toggle"
+                  onClick={() => setOpenDomain(isOpen ? null : day)}
+                  aria-expanded={isOpen}
+                >
+                  <span className="day-number">{title}</span>
+                  <span className="card-arrow" aria-hidden="true">+</span>
+                </button>
+                <div className="domain-details">
+                  <div>
+                    <span>{day}</span>
+                    <strong>Notes + quiz</strong>
+                  </div>
+                  <p>{detail}</p>
+                </div>
+              </article>
+            );
+          })}
+          <article className="project-card">
+            <span className="day-number">Day 05</span>
+            <h3>Real-life project</h3>
+            <p>Put your new foundations to work on a guided project inspired by the real world.</p>
+            <span aria-hidden="true">✦</span>
+          </article>
         </div>
       </section>
 
