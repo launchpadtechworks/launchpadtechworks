@@ -61,8 +61,8 @@ function UnlockScreen({ onDone }) {
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = window.setTimeout(() => setIsFading(true), 4800);
-    const finishTimer = window.setTimeout(onDone, 5500);
+    const fadeTimer = window.setTimeout(() => setIsFading(true), 6000);
+    const finishTimer = window.setTimeout(onDone, 6700);
     return () => {
       window.clearTimeout(fadeTimer);
       window.clearTimeout(finishTimer);
