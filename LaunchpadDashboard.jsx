@@ -247,11 +247,10 @@ function SecureStudentDashboard({ session, onSignOut }) {
   async function openResource(kind) {
     const path = kind === "notes" ? activeModule?.note_path : activeModule?.video_path;
     if (!path) { setNotice("Your instructor has not uploaded this material yet."); return; }
-    const { data, error } = await supabase.storage.from("course-content").createSignedUrl(path, 300);
+    const { data, error } = await supabase.storage.from("course-content").createSignedUrl(path, 90);
     if (error) { setNotice("This private material is not available to your account."); return; }
     if (kind === "notes") {
-      const download = await supabase.storage.from("course-content").createSignedUrl(path, 300, { download: true });
-      setResource({ kind, title: activeModule.title, url: data.signedUrl, downloadUrl: download.data?.signedUrl });
+      setResource({ kind, title: activeModule.title, url: data.signedUrl });
     } else {
       setResource({ kind, title: activeModule.title, url: data.signedUrl });
     }
@@ -294,7 +293,7 @@ function SecureStudentDashboard({ session, onSignOut }) {
         </>}
       </article>
     </section>
-    {resource && <div className="resource-modal" role="dialog" aria-modal="true"><div className="resource-dialog"><button className="modal-close" onClick={() => setResource(null)}>Close ×</button><h2>{resource.title}</h2>{resource.kind === "notes" ? <><iframe src={resource.url} title="Course notes" /><a className="download-notes" href={resource.downloadUrl} target="_blank" rel="noreferrer">Download notes ↓</a></> : <><video className="course-video" src={resource.url} controls controlsList="nodownload noplaybackrate" disablePictureInPicture onContextMenu={(event) => event.preventDefault()} /><p>Private course video. Do not share, download, or record this material.</p></>}</div></div>}
+    {resource && <div className="resource-modal" role="dialog" aria-modal="true"><div className="resource-dialog"><button className="modal-close" onClick={() => setResource(null)}>Close ×</button><h2>{resource.title}</h2>{resource.kind === "notes" ? <><iframe src={resource.url} title="Course notes" /><p className="private-resource-note">Private notes are available only inside your learning space.</p></> : <><video className="course-video" src={resource.url} controls controlsList="nodownload noplaybackrate" disablePictureInPicture onContextMenu={(event) => event.preventDefault()} /><p>Private course video. Do not share, download, or record this material.</p></>}</div></div>}
     {quizOpen && <div className="resource-modal" role="dialog" aria-modal="true"><div className="resource-dialog quiz-dialog"><button className="modal-close" onClick={() => setQuizOpen(false)}>Close ×</button><p className="eyebrow">Knowledge check</p><h2>{activeModule.title} quiz</h2>{quizQuestions.map((question, index) => <fieldset key={question.question}><legend>{index + 1}. {question.question}</legend>{question.options.map((option, optionIndex) => <label key={option}><input type="radio" name={`q-${index}`} checked={Number(answers[index]) === optionIndex} onChange={() => setAnswers((current) => ({ ...current, [index]: optionIndex }))} /> {option}</label>)}</fieldset>)}<button className="primary-action" onClick={submitQuiz}>Submit quiz</button></div></div>}
   </main>;
 }
