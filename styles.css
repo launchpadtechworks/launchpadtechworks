@@ -236,6 +236,30 @@ h1 {
 .course-hero h1 em { color: #ffce7a; font-style: normal; }
 .course-hero > p:not(.eyebrow) { max-width: 500px; margin: 28px 0; font-size: 19px; font-weight: 600; line-height: 1.4; }
 
+.enroll-button {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  margin: 4px 18px 0 0;
+  padding: 14px 25px 15px;
+  border: 2px solid #ffce7a;
+  border-radius: 999px;
+  background: #e8503a;
+  box-shadow: 4px 4px 0 #ffce7a;
+  color: #fff7eb;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.enroll-button:hover,
+.enroll-button:focus-visible { box-shadow: 7px 7px 0 #ffce7a; outline: none; transform: translate(-2px, -2px); }
+
 .student-orbit { position: absolute; right: max(4vw, calc((100vw - 1180px) / 2)); bottom: 20px; width: min(40vw, 555px); height: min(43vw, 550px); }
 .orbit-photo { position: absolute; z-index: 1; border: 6px solid #fff7eb; border-radius: 50%; object-fit: cover; box-shadow: 7px 7px 0 #e8503a; }
 .orbit-photo-main { right: 0; bottom: 0; width: 42%; height: 42%; object-position: 50% 38%; background: #ffce7a; }
@@ -324,6 +348,7 @@ h1 {
   .course-hero { min-height: 63svh; padding: 74px 20px 54px; }
   .course-hero h1 { font-size: clamp(44px, 13vw, 62px); }
   .course-hero > p:not(.eyebrow) { margin: 22px 0; font-size: 17px; }
+  .enroll-button { margin-top: 0; padding: 12px 20px 13px; font-size: 20px; }
   .student-orbit { right: -22px; bottom: -25px; width: 255px; height: 310px; opacity: .34; }
   .course-section { padding: 75px 0; }
   .day-grid { grid-template-columns: 1fr; margin-top: 34px; }

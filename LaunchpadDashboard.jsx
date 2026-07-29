@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const ENROLLMENT_FORM_URL = "https://forms.gle/pQJJmMFLYrgxboaH6";
+
 const courseDays = [
   ["Day 01", "Meet Your AI Toolkit", "Get comfortable with the tools, language, and learning flow before you build."],
   ["Day 02", "Teach a Car to Make Decisions", "See how data, patterns, and choices turn into real machine learning."],
@@ -28,6 +30,9 @@ function CoursePage({ onBack }) {
           <img className="orbit-photo orbit-photo-code" src="/student-code.webp" alt="Student coding on a laptop" />
           <img className="orbit-photo orbit-photo-study" src="/student-study.webp" alt="Student studying with headphones" />
         </div>
+        <a className="enroll-button" href={ENROLLMENT_FORM_URL} target="_blank" rel="noreferrer">
+          Enroll Now <span aria-hidden="true">↗</span>
+        </a>
         <a href="#roadmap" className="scroll-cue">Explore the course <span>↓</span></a>
       </section>
 
