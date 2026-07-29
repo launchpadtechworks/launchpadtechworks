@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { supabase } from "./supabaseClient";
 
 const ENROLLMENT_FORM_URL = "https://forms.gle/pQJJmMFLYrgxboaH6";
 
@@ -18,6 +19,94 @@ const learningRoad = [
   ["Days 06–12", "Build, improve, and ask questions"],
   ["Day 13", "Submit your project"],
 ];
+
+function LoginScreen({ onClose, onSuccess }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+    const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    setIsSubmitting(false);
+    if (signInError) {
+      setError(signInError.message);
+      return;
+    }
+    onSuccess(data.session);
+  }
+
+  return (
+    <main className="login-page">
+      <button className="login-back" onClick={onClose}>← Back to Launchpad</button>
+      <section className="login-card">
+        <p className="eyebrow">Student space</p>
+        <h1>Welcome back.</h1>
+        <p>Use the credentials sent to you after your registration is approved.</p>
+        <form onSubmit={handleSubmit}>
+          <label>Email<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" /></label>
+          <label>Password<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" /></label>
+          {error && <p className="login-error" role="alert">{error}</p>}
+          <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Checking…" : "Log in"} <span>→</span></button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
+function UnlockScreen({ onDone }) {
+  useEffect(() => {
+    const timer = window.setTimeout(onDone, 3000);
+    return () => window.clearTimeout(timer);
+  }, [onDone]);
+
+  return (
+    <main className="unlock-screen">
+      <img src="/dashboard-unlock.webp" alt="Animation of a student breaking free from the wall" />
+      <p>Your learning space is opening…</p>
+    </main>
+  );
+}
+
+function StudentDashboard({ session, onSignOut }) {
+  const [activeDay, setActiveDay] = useState(1);
+  const studentName = session.user.email?.split("@")[0] ?? "Student";
+  const lessons = ["Artificial Intelligence", "Data Science", "AI & Machine Learning", "Python", "Project brief"];
+
+  return (
+    <main className="student-dashboard">
+      <header className="dashboard-nav">
+        <div className="dashboard-brand">Launchpad <span>Techworks</span></div>
+        <div><span className="student-email">{session.user.email}</span><button onClick={onSignOut}>Log out</button></div>
+      </header>
+      <section className="dashboard-welcome">
+        <p className="eyebrow">Student dashboard</p>
+        <h1>Hey, {studentName}.<br /><em>Let&apos;s build today.</em></h1>
+        <p>Pick up your notes, take today&apos;s quiz, and keep your project moving.</p>
+      </section>
+      <section className="dashboard-content">
+        <aside className="lesson-rail" aria-label="Course days">
+          {lessons.map((lesson, index) => {
+            const day = index + 1;
+            return <button key={lesson} className={activeDay === day ? "active" : ""} onClick={() => setActiveDay(day)}><span>Day {String(day).padStart(2, "0")}</span>{lesson}</button>;
+          })}
+        </aside>
+        <article className="lesson-panel">
+          <span className="lesson-kicker">Day {String(activeDay).padStart(2, "0")} · {lessons[activeDay - 1]}</span>
+          <h2>{activeDay === 5 ? "Your real-life project" : "Today’s learning space"}</h2>
+          <p>{activeDay === 5 ? "Your project brief will appear here. Use the next days to build, test, and prepare it for submission." : "Your notes and quiz will appear here once your instructor publishes this lesson."}</p>
+          <div className="lesson-actions">
+            <button className="primary-action">Open notes</button>
+            <button className="secondary-action">Take quiz</button>
+          </div>
+        </article>
+      </section>
+    </main>
+  );
+}
 
 function CoursePage({ onBack }) {
   const [questionSent, setQuestionSent] = useState(false);
@@ -137,11 +226,34 @@ function CoursePage({ onBack }) {
 export default function LaunchpadDashboard() {
   const [isRevealed, setIsRevealed] = useState(false);
   const [showCourses, setShowCourses] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [session, setSession] = useState(null);
+  const [isUnlocking, setIsUnlocking] = useState(false);
 
   useEffect(() => {
     const introTimer = window.setTimeout(() => setIsRevealed(true), 3000);
     return () => window.clearTimeout(introTimer);
   }, []);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => setSession(nextSession));
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    setSession(null);
+    setIsUnlocking(false);
+  }
+
+  if (session) {
+    return isUnlocking
+      ? <UnlockScreen onDone={() => setIsUnlocking(false)} />
+      : <StudentDashboard session={session} onSignOut={handleSignOut} />;
+  }
+
+  if (showLogin) return <LoginScreen onClose={() => setShowLogin(false)} onSuccess={(nextSession) => { setIsUnlocking(true); setSession(nextSession); }} />;
 
   if (showCourses) return <CoursePage onBack={() => setShowCourses(false)} />;
 
@@ -162,6 +274,7 @@ export default function LaunchpadDashboard() {
       <button className="start-button" onClick={() => setShowCourses(true)}>
         Start Now <span aria-hidden="true">↗</span>
       </button>
+      <button className="login-link" onClick={() => setShowLogin(true)}>Student login</button>
       <p className="intro-label" aria-hidden="true">A better way in starts here.</p>
     </main>
   );

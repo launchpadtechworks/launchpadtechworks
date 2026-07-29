@@ -157,6 +157,74 @@ h1 {
   text-transform: uppercase;
 }
 
+.login-link {
+  position: absolute;
+  top: clamp(20px, 3vw, 42px);
+  right: clamp(24px, 5vw, 72px);
+  z-index: 3;
+  padding: 9px 14px;
+  border: 1px solid rgb(255 247 235 / 80%);
+  border-radius: 999px;
+  color: #fff7eb;
+  background: rgb(27 35 64 / 40%);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.login-page, .unlock-screen {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #fff7eb;
+  background: #1b2340;
+}
+
+.login-page { position: relative; background-image: radial-gradient(circle at 84% 12%, #e8503a 0 12%, transparent 12.2%); }
+.login-back { position: absolute; top: 26px; left: 26px; border: 0; padding: 0; color: #ffce7a; background: transparent; font-weight: 800; }
+.login-card { width: min(100%, 460px); padding: clamp(30px, 7vw, 56px); border: 2px solid #ffce7a; background: #fff7eb; box-shadow: 10px 10px 0 #e8503a; color: #1b2340; }
+.login-card .eyebrow { color: #e8503a; }
+.login-card h1 { color: #1b2340; font-size: clamp(44px, 7vw, 66px); }
+.login-card > p:not(.eyebrow) { margin: 19px 0 28px; color: #5c6071; font-weight: 600; line-height: 1.45; }
+.login-card form { display: grid; gap: 16px; }
+.login-card label { display: grid; gap: 7px; font-size: 14px; font-weight: 800; }
+.login-card input { width: 100%; padding: 13px 14px; border: 2px solid #1b2340; border-radius: 0; background: #fffdf8; color: #1b2340; }
+.login-card input:focus { outline: 3px solid #ffce7a; }
+.login-card form > button { margin-top: 5px; border: 2px solid #1b2340; padding: 13px 17px; background: #e8503a; color: #fff7eb; font-family: "Barlow Condensed", sans-serif; font-size: 21px; font-weight: 900; text-transform: uppercase; }
+.login-card form > button:disabled { cursor: wait; opacity: .65; }
+.login-error { margin: 0; color: #b32323; font-size: 14px; font-weight: 700; }
+
+.unlock-screen { position: relative; overflow: hidden; padding: 0; background: #1b2340; }
+.unlock-screen img { width: 100%; height: 100svh; object-fit: cover; }
+.unlock-screen p { position: absolute; bottom: 8%; margin: 0; color: #fff7eb; font-family: "Barlow Condensed", sans-serif; font-size: clamp(20px, 4vw, 30px); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+
+.student-dashboard { min-height: 100svh; color: #1b2340; background: #fff7eb; }
+.dashboard-nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px max(24px, calc((100vw - 1180px) / 2)); border-bottom: 2px solid #1b2340; }
+.dashboard-brand { font-family: "Barlow Condensed", sans-serif; font-size: 25px; font-weight: 900; text-transform: uppercase; }
+.dashboard-brand span { color: #e8503a; }
+.dashboard-nav > div:last-child { display: flex; align-items: center; gap: 13px; }
+.student-email { max-width: 250px; overflow: hidden; font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.dashboard-nav button { border: 2px solid #1b2340; padding: 7px 10px; background: transparent; font-size: 13px; font-weight: 800; }
+.dashboard-welcome { padding: clamp(55px, 9vw, 105px) max(24px, calc((100vw - 1180px) / 2)) 60px; color: #fff7eb; background: #1b2340; }
+.dashboard-welcome .eyebrow { color: #ffce7a; }
+.dashboard-welcome h1 { max-width: 670px; font-size: clamp(47px, 7vw, 88px); }
+.dashboard-welcome h1 em { color: #ffce7a; font-style: normal; }
+.dashboard-welcome > p:last-child { max-width: 510px; margin: 21px 0 0; font-size: 18px; font-weight: 600; line-height: 1.45; }
+.dashboard-content { display: grid; grid-template-columns: 300px 1fr; gap: 42px; width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 55px 0; }
+.lesson-rail { display: grid; align-content: start; gap: 9px; }
+.lesson-rail button { display: grid; gap: 4px; padding: 14px; border: 2px solid transparent; background: transparent; color: #1b2340; text-align: left; font-size: 17px; font-weight: 800; }
+.lesson-rail button span { color: #e8503a; font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.lesson-rail button.active { border-color: #1b2340; background: #ffce7a; box-shadow: 4px 4px 0 #1b2340; }
+.lesson-panel { min-height: 345px; padding: clamp(28px, 5vw, 55px); border: 2px solid #1b2340; background: #fffdf8; box-shadow: 7px 7px 0 #e8503a; }
+.lesson-kicker { color: #e8503a; font-family: "Barlow Condensed", sans-serif; font-size: 16px; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+.lesson-panel h2 { margin: 20px 0 14px; font-family: "Archivo Black", sans-serif; font-size: clamp(32px, 5vw, 58px); letter-spacing: -.06em; line-height: .96; }
+.lesson-panel > p { max-width: 570px; font-size: 17px; font-weight: 600; line-height: 1.45; }
+.lesson-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 31px; }
+.lesson-actions button { padding: 12px 17px; border: 2px solid #1b2340; font-family: "Barlow Condensed", sans-serif; font-size: 19px; font-weight: 900; text-transform: uppercase; }
+.primary-action { background: #e8503a; color: #fff7eb; }
+.secondary-action { background: #ffce7a; color: #1b2340; }
+
 .is-revealed .wall-picture {
   opacity: .62;
   transition: opacity 700ms ease;
@@ -353,6 +421,7 @@ h1 {
   }
 
   .intro-label { top: 22px; left: 20px; font-size: 13px; }
+  .login-link { top: 20px; right: 20px; font-size: 12px; }
 
   .course-nav, .course-section { width: min(100% - 40px, 1180px); }
   .course-nav { padding: 18px 0; }
@@ -372,6 +441,11 @@ h1 {
   .question-row { flex-direction: column; }
   .question-row button { min-height: 51px; }
   .course-footer { align-items: flex-start; flex-direction: column; padding: 24px 20px; }
+  .login-card { box-shadow: 6px 6px 0 #e8503a; }
+  .student-email { display: none; }
+  .dashboard-content { grid-template-columns: 1fr; gap: 28px; width: min(100% - 40px, 1180px); padding: 35px 0; }
+  .lesson-rail { grid-auto-flow: column; grid-auto-columns: minmax(155px, 1fr); grid-template-columns: none; overflow-x: auto; padding-bottom: 8px; }
+  .lesson-rail button { min-height: 78px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
