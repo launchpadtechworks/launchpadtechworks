@@ -226,6 +226,21 @@ h1 {
 .lesson-actions button { padding: 12px 17px; border: 2px solid #1b2340; font-family: "Barlow Condensed", sans-serif; font-size: 19px; font-weight: 900; text-transform: uppercase; }
 .primary-action { background: #e8503a; color: #fff7eb; }
 .secondary-action { background: #ffce7a; color: #1b2340; }
+.lesson-rail button:disabled { cursor: not-allowed; opacity: .5; }
+.lesson-actions button:disabled { cursor: not-allowed; opacity: .5; box-shadow: none; }
+.complete-notes { background: #fffdf8; color: #1b2340; }
+.quiz-action { background: #1b2340; color: #fff7eb; }
+.dashboard-notice { margin: 20px 0 0; padding: 12px 14px; border-left: 4px solid #e8503a; background: #fff1d9; font-weight: 700; }
+.resource-modal { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: rgb(27 35 64 / 78%); }
+.resource-dialog { position: relative; width: min(900px, 100%); max-height: min(86svh, 800px); overflow: auto; padding: 32px; border: 2px solid #1b2340; background: #fff7eb; box-shadow: 8px 8px 0 #e8503a; }
+.resource-dialog h2 { margin: 10px 38px 20px 0; font-family: "Archivo Black", sans-serif; font-size: clamp(25px, 4vw, 40px); letter-spacing: -.05em; }
+.modal-close { position: absolute; top: 17px; right: 17px; border: 2px solid #1b2340; padding: 7px 10px; background: #fff7eb; font-weight: 800; }
+.resource-dialog iframe { width: 100%; height: min(60svh, 620px); border: 2px solid #1b2340; background: white; }
+.download-notes { display: inline-block; margin-top: 17px; padding: 11px 16px; border: 2px solid #1b2340; background: #e8503a; color: #fff7eb; font-family: "Barlow Condensed", sans-serif; font-size: 19px; font-weight: 900; text-decoration: none; text-transform: uppercase; }
+.course-video { display: block; width: 100%; max-height: 60svh; background: #080b15; }
+.resource-dialog fieldset { display: grid; gap: 9px; margin: 18px 0; padding: 16px; border: 2px solid #1b2340; }
+.resource-dialog legend { padding: 0 7px; font-weight: 900; }
+.resource-dialog fieldset label { font-weight: 600; }
 
 .is-revealed .wall-picture {
   opacity: .62;

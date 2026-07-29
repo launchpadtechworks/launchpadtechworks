@@ -20,6 +20,25 @@ const learningRoad = [
   ["Day 13", "Submit your project"],
 ];
 
+const DOMAIN_LABELS = {
+  artificial_intelligence: "Artificial Intelligence",
+  data_science: "Data Science",
+  aiml: "Artificial Intelligence & Machine Learning",
+  python: "Python",
+};
+
+const DAY_TITLES = [
+  "Welcome & foundations", "Core ideas", "Guided practice", "Checkpoint", "Your project brief",
+  "Build sprint", "Build sprint", "Build sprint", "Build sprint", "Build sprint", "Build sprint", "Final polish", "Project submission",
+];
+
+function dayIsReleased(startDate, dayNumber) {
+  if (!startDate) return dayNumber === 1;
+  const releaseDate = new Date(`${startDate}T00:00:00`);
+  releaseDate.setDate(releaseDate.getDate() + dayNumber - 1);
+  return new Date() >= releaseDate;
+}
+
 function LoginScreen({ onClose, onSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -167,6 +186,119 @@ function StudentDashboard({ session, onSignOut }) {
   );
 }
 
+function SecureStudentDashboard({ session, onSignOut }) {
+  const [profile, setProfile] = useState(null);
+  const [modules, setModules] = useState([]);
+  const [progress, setProgress] = useState([]);
+  const [activeDay, setActiveDay] = useState(1);
+  const [notice, setNotice] = useState("");
+  const [resource, setResource] = useState(null);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [answers, setAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
+  const studentName = session.user.user_metadata?.display_name ?? session.user.email?.split("@")[0] ?? "Student";
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      const { data: nextProfile, error: profileError } = await supabase.from("student_profiles")
+        .select("assigned_domain, start_date").eq("id", session.user.id).maybeSingle();
+      if (profileError || !nextProfile) {
+        setNotice("Your account is waiting for a domain assignment. Your instructor will unlock your learning space soon.");
+        setLoading(false);
+        return;
+      }
+      setProfile(nextProfile);
+      const [{ data: nextModules, error: moduleError }, { data: nextProgress, error: progressError }] = await Promise.all([
+        supabase.from("course_modules").select("*").eq("domain", nextProfile.assigned_domain).order("day_number"),
+        supabase.from("lesson_progress").select("*").eq("user_id", session.user.id),
+      ]);
+      setModules(nextModules ?? []);
+      setProgress(nextProgress ?? []);
+      if (moduleError || progressError) setNotice("Your secure course tables need to be set up in Supabase first.");
+      setLoading(false);
+    }
+    load();
+  }, [session.user.id]);
+
+  const days = Array.from({ length: 13 }, (_, index) => {
+    const dayNumber = index + 1;
+    return modules.find((item) => item.day_number === dayNumber) ?? {
+      day_number: dayNumber,
+      title: DAY_TITLES[index],
+      description: "This lesson will appear when your instructor publishes it.",
+    };
+  });
+  const activeModule = days[activeDay - 1];
+  const activeProgress = progress.find((item) => item.module_id === activeModule?.id);
+  const released = dayIsReleased(profile?.start_date, activeDay);
+  const notesComplete = Boolean(activeProgress?.notes_completed_at);
+  const quizQuestions = Array.isArray(activeModule?.quiz_questions) ? activeModule.quiz_questions : [];
+
+  async function saveProgress(changes) {
+    if (!activeModule?.id) return;
+    const { data, error } = await supabase.from("lesson_progress").upsert({
+      user_id: session.user.id, module_id: activeModule.id, ...changes,
+    }, { onConflict: "user_id,module_id" }).select().single();
+    if (error) { setNotice(error.message); return; }
+    setProgress((current) => [...current.filter((item) => item.module_id !== data.module_id), data]);
+  }
+
+  async function openResource(kind) {
+    const path = kind === "notes" ? activeModule?.note_path : activeModule?.video_path;
+    if (!path) { setNotice("Your instructor has not uploaded this material yet."); return; }
+    const { data, error } = await supabase.storage.from("course-content").createSignedUrl(path, 300);
+    if (error) { setNotice("This private material is not available to your account."); return; }
+    if (kind === "notes") {
+      const download = await supabase.storage.from("course-content").createSignedUrl(path, 300, { download: true });
+      setResource({ kind, title: activeModule.title, url: data.signedUrl, downloadUrl: download.data?.signedUrl });
+    } else {
+      setResource({ kind, title: activeModule.title, url: data.signedUrl });
+    }
+  }
+
+  async function submitQuiz() {
+    if (!activeModule?.id || quizQuestions.some((_, index) => answers[index] === undefined)) {
+      setNotice("Answer every question before submitting.");
+      return;
+    }
+    const { data, error } = await supabase.rpc("submit_lesson_quiz", { p_module_id: activeModule.id, p_answers: answers });
+    if (error) { setNotice(error.message); return; }
+    const { data: updatedProgress } = await supabase.from("lesson_progress").select("*").eq("user_id", session.user.id).eq("module_id", activeModule.id).single();
+    if (updatedProgress) setProgress((current) => [...current.filter((item) => item.module_id !== updatedProgress.module_id), updatedProgress]);
+    setQuizOpen(false);
+    setAnswers({});
+    setNotice(`Quiz complete — ${data.score}/${data.total}.`);
+  }
+
+  return <main className="student-dashboard">
+    <header className="dashboard-nav"><div className="dashboard-brand">Launchpad <span>Techworks</span></div><div><span className="student-email">{studentName}</span><button onClick={onSignOut}>Log out</button></div></header>
+    <section className="dashboard-welcome"><p className="eyebrow">Your assigned learning path</p><h1>Hey, {studentName}.<br /><em>{profile ? DOMAIN_LABELS[profile.assigned_domain] ?? profile.assigned_domain : "Your space is preparing."}</em></h1><p>You can view only your assigned domain. Complete the notes to unlock each quiz.</p></section>
+    <section className="dashboard-content">
+      <aside className="lesson-rail" aria-label="Course days">{days.map((lesson) => {
+        const isOpen = dayIsReleased(profile?.start_date, lesson.day_number);
+        return <button key={lesson.day_number} disabled={!isOpen} className={activeDay === lesson.day_number ? "active" : ""} onClick={() => setActiveDay(lesson.day_number)}><span>Day {String(lesson.day_number).padStart(2, "0")} {!isOpen && "· 🔒"}</span>{isOpen ? lesson.title : "Locked until release day"}</button>;
+      })}</aside>
+      <article className="lesson-panel">
+        {loading ? <p>Opening your secure learning space…</p> : !profile ? <><span className="lesson-kicker">Account check</span><h2>Assignment pending.</h2><p>{notice}</p></> : <>
+          <span className="lesson-kicker">Day {String(activeDay).padStart(2, "0")} · {DOMAIN_LABELS[profile.assigned_domain]}</span>
+          <h2>{released ? activeModule.title : "🔒 This day is locked"}</h2>
+          <p>{released ? activeModule.description : "Come back on the scheduled day. Your new notes and quiz will unlock automatically."}</p>
+          {notice && <p className="dashboard-notice" role="status">{notice}</p>}
+          {released && <div className="lesson-actions">
+            <button className="primary-action" onClick={() => openResource("notes")}>View notes</button>
+            <button className="secondary-action" onClick={() => openResource("video")} disabled={!activeModule.video_path}>Video notes</button>
+            <button className="complete-notes" onClick={() => saveProgress({ notes_completed_at: new Date().toISOString() })} disabled={notesComplete || !activeModule.note_path}>{notesComplete ? "✓ Notes complete" : "I completed the notes"}</button>
+            <button className="quiz-action" onClick={() => setQuizOpen(true)} disabled={!notesComplete || !quizQuestions.length}>{notesComplete ? "Take quiz" : "🔒 Quiz unlocks after notes"}</button>
+          </div>}
+        </>}
+      </article>
+    </section>
+    {resource && <div className="resource-modal" role="dialog" aria-modal="true"><div className="resource-dialog"><button className="modal-close" onClick={() => setResource(null)}>Close ×</button><h2>{resource.title}</h2>{resource.kind === "notes" ? <><iframe src={resource.url} title="Course notes" /><a className="download-notes" href={resource.downloadUrl} target="_blank" rel="noreferrer">Download notes ↓</a></> : <><video className="course-video" src={resource.url} controls controlsList="nodownload noplaybackrate" disablePictureInPicture onContextMenu={(event) => event.preventDefault()} /><p>Private course video. Do not share, download, or record this material.</p></>}</div></div>}
+    {quizOpen && <div className="resource-modal" role="dialog" aria-modal="true"><div className="resource-dialog quiz-dialog"><button className="modal-close" onClick={() => setQuizOpen(false)}>Close ×</button><p className="eyebrow">Knowledge check</p><h2>{activeModule.title} quiz</h2>{quizQuestions.map((question, index) => <fieldset key={question.question}><legend>{index + 1}. {question.question}</legend>{question.options.map((option, optionIndex) => <label key={option}><input type="radio" name={`q-${index}`} checked={Number(answers[index]) === optionIndex} onChange={() => setAnswers((current) => ({ ...current, [index]: optionIndex }))} /> {option}</label>)}</fieldset>)}<button className="primary-action" onClick={submitQuiz}>Submit quiz</button></div></div>}
+  </main>;
+}
+
 function CoursePage({ onBack }) {
   const [questionSent, setQuestionSent] = useState(false);
   const [openDomain, setOpenDomain] = useState(null);
@@ -312,7 +444,7 @@ export default function LaunchpadDashboard() {
     }
     return isUnlocking
       ? <UnlockScreen onDone={() => setIsUnlocking(false)} />
-      : <StudentDashboard session={session} onSignOut={handleSignOut} />;
+      : <SecureStudentDashboard session={session} onSignOut={handleSignOut} />;
   }
 
   if (showLogin) return <LoginScreen onClose={() => setShowLogin(false)} onSuccess={(nextSession) => { setIsUnlocking(true); setSession(nextSession); }} />;
