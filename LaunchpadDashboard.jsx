@@ -233,6 +233,7 @@ function SecureStudentDashboard({ session, onSignOut }) {
   const activeProgress = progress.find((item) => item.module_id === activeModule?.id);
   const released = dayIsReleased(profile?.start_date, activeDay);
   const notesComplete = Boolean(activeProgress?.notes_completed_at);
+  const quizComplete = Boolean(activeProgress?.quiz_completed_at);
   const quizQuestions = Array.isArray(activeModule?.quiz_questions) ? activeModule.quiz_questions : [];
 
   async function saveProgress(changes) {
@@ -273,7 +274,7 @@ function SecureStudentDashboard({ session, onSignOut }) {
 
   return <main className="student-dashboard">
     <header className="dashboard-nav"><div className="dashboard-brand">Launchpad <span>Techworks</span></div><div><span className="student-email">{studentName}</span><button onClick={onSignOut}>Log out</button></div></header>
-    <section className="dashboard-welcome"><p className="eyebrow">Your assigned learning path</p><h1>Hey, {studentName}.<br /><em>{profile ? DOMAIN_LABELS[profile.assigned_domain] ?? profile.assigned_domain : "Your space is preparing."}</em></h1><p>You can view only your assigned domain. Complete the notes to unlock each quiz.</p></section>
+    <section className="dashboard-welcome"><p className="eyebrow">Your assigned learning path</p><h1>Hey, {studentName}.<br /><em>{profile ? DOMAIN_LABELS[profile.assigned_domain] ?? profile.assigned_domain : "Your space is preparing."}</em></h1><p>You can view only your assigned domain. Complete the notes to unlock each quiz.</p>{profile && <div className="learning-status"><span>🔒 One domain</span><span>📅 Day {activeDay} of 13</span><span>{notesComplete ? "✓ Notes complete" : "• Notes first"}</span></div>}</section>
     <section className="dashboard-content">
       <aside className="lesson-rail" aria-label="Course days">{days.map((lesson) => {
         const isOpen = dayIsReleased(profile?.start_date, lesson.day_number);
@@ -286,10 +287,10 @@ function SecureStudentDashboard({ session, onSignOut }) {
           <p>{released ? activeModule.description : "Come back on the scheduled day. Your new notes and quiz will unlock automatically."}</p>
           {notice && <p className="dashboard-notice" role="status">{notice}</p>}
           {released && <div className="lesson-actions">
-            <button className="primary-action" onClick={() => openResource("notes")}>View notes</button>
+            <button className="primary-action" onClick={() => openResource("notes")} disabled={!activeModule.note_path}>{activeModule.note_path ? "View notes" : "Notes coming soon"}</button>
             <button className="secondary-action" onClick={() => openResource("video")} disabled={!activeModule.video_path}>Video notes</button>
             <button className="complete-notes" onClick={() => saveProgress({ notes_completed_at: new Date().toISOString() })} disabled={notesComplete || !activeModule.note_path}>{notesComplete ? "✓ Notes complete" : "I completed the notes"}</button>
-            <button className="quiz-action" onClick={() => setQuizOpen(true)} disabled={!notesComplete || !quizQuestions.length}>{notesComplete ? "Take quiz" : "🔒 Quiz unlocks after notes"}</button>
+            <button className="quiz-action" onClick={() => setQuizOpen(true)} disabled={quizComplete || !notesComplete || !quizQuestions.length}>{quizComplete ? "✓ Quiz complete" : notesComplete && quizQuestions.length ? "Take quiz" : "🔒 Quiz unlocks after notes"}</button>
           </div>}
         </>}
       </article>

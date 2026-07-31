@@ -18,6 +18,8 @@ button, input { font: inherit; }
 
 button { cursor: pointer; }
 
+:focus-visible { outline: 3px solid #ffce7a; outline-offset: 4px; }
+
 html { scroll-behavior: smooth; }
 
 .landing-page {
@@ -213,6 +215,8 @@ h1 {
 .dashboard-welcome h1 { max-width: 670px; font-size: clamp(47px, 7vw, 88px); }
 .dashboard-welcome h1 em { color: #ffce7a; font-style: normal; }
 .dashboard-welcome > p:last-child { max-width: 510px; margin: 21px 0 0; font-size: 18px; font-weight: 600; line-height: 1.45; }
+.learning-status { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 25px; }
+.learning-status span { padding: 7px 10px; border: 1px solid rgb(255 247 235 / 45%); border-radius: 999px; color: #fff7eb; font-size: 13px; font-weight: 800; }
 .dashboard-content { display: grid; grid-template-columns: 300px 1fr; gap: 42px; width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 55px 0; }
 .lesson-rail { display: grid; align-content: start; gap: 9px; }
 .lesson-rail button { display: grid; gap: 4px; padding: 14px; border: 2px solid transparent; background: transparent; color: #1b2340; text-align: left; font-size: 17px; font-weight: 800; }
@@ -466,6 +470,8 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
   .hero-content { opacity: 1; transform: none; filter: none; transition: none; }
   .hero-shade { transition: none; }
   .start-button { transition: none; }
