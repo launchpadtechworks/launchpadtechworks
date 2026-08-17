@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Launchpad Techworks symbol</title>
+  <desc id="desc">An open book forms a launchpad for a rising arrow and orbit.</desc>
+  <path d="M73 372 256 449l183-77-80-35-103 43-103-43-80 35Z" fill="#1B2340"/>
+  <path d="M91 363 256 433l165-70-63-27-102 42-102-42-63 27Z" fill="#FFF7EB"/>
+  <path d="M103 350 256 415l153-65-61-26-92 38-92-38-61 26Z" fill="#1B2340"/>
+  <path d="M285 322c69-15 121-55 146-114 11-26 11-52 0-71" stroke="#1B2340" stroke-width="24" stroke-linecap="round"/>
+  <path d="M227 187c-79 15-139 61-154 124-7 29-1 56 16 76" stroke="#1B2340" stroke-width="24" stroke-linecap="round"/>
+  <path d="m256 338-56-23 139-231 36 58-119 196Z" fill="#E8503A"/>
+  <path d="m339 84 70 38-34 20-36-58Z" fill="#E8503A"/>
+  <path d="m269 336 20-136 18 87-38 49Z" fill="#FFF7EB"/>
+  <path d="m150 134 10 28 28 10-28 10-10 28-10-28-28-10 28-10 10-28Z" fill="#E8503A"/>
+</svg>
