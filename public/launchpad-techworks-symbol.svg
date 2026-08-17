@@ -1,13 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-labelledby="title desc">
-  <title id="title">Launchpad Techworks symbol</title>
-  <desc id="desc">An open book forms a launchpad for a rising arrow and orbit.</desc>
-  <path d="M73 372 256 449l183-77-80-35-103 43-103-43-80 35Z" fill="#1B2340"/>
-  <path d="M91 363 256 433l165-70-63-27-102 42-102-42-63 27Z" fill="#FFF7EB"/>
-  <path d="M103 350 256 415l153-65-61-26-92 38-92-38-61 26Z" fill="#1B2340"/>
-  <path d="M285 322c69-15 121-55 146-114 11-26 11-52 0-71" stroke="#1B2340" stroke-width="24" stroke-linecap="round"/>
-  <path d="M227 187c-79 15-139 61-154 124-7 29-1 56 16 76" stroke="#1B2340" stroke-width="24" stroke-linecap="round"/>
-  <path d="m256 338-56-23 139-231 36 58-119 196Z" fill="#E8503A"/>
-  <path d="m339 84 70 38-34 20-36-58Z" fill="#E8503A"/>
-  <path d="m269 336 20-136 18 87-38 49Z" fill="#FFF7EB"/>
-  <path d="m150 134 10 28 28 10-28 10-10 28-10-28-28-10 28-10 10-28Z" fill="#E8503A"/>
+  <title id="title">Launchpad Techworks L symbol</title>
+  <desc id="desc">A bold letter L becomes a launchpad for an ascending arrow and orbit.</desc>
+  <path d="M136 92v286c0 18 14 32 32 32h206" stroke="#1B2340" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M162 365h193" stroke="#FFF7EB" stroke-width="12" stroke-linecap="round"/>
+  <path d="M191 286c27-74 88-127 163-142" stroke="#1B2340" stroke-width="18" stroke-linecap="round"/>
+  <path d="M301 175c55 22 91 64 99 116" stroke="#1B2340" stroke-width="18" stroke-linecap="round"/>
+  <path d="m254 341-45-17 118-214 34 47-107 184Z" fill="#E8503A"/>
+  <path d="m327 110 67 39-33 8-34-47Z" fill="#E8503A"/>
+  <path d="m274 331 15-110 22 65-37 45Z" fill="#FFDFB9"/>
+  <path d="m212 120 9 25 25 9-25 9-9 25-9-25-25-9 25-9 9-25Z" fill="#E8503A"/>
 </svg>
