@@ -145,19 +145,12 @@ h1 {
 }
 
 .intro-label {
-  position: absolute;
-  top: clamp(20px, 3vw, 42px);
-  left: clamp(24px, 5vw, 72px);
-  z-index: 1;
-  margin: 0;
-  color: #fff7eb;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  opacity: .9;
-  text-transform: uppercase;
+  display: none;
 }
+
+.landing-brand { position: absolute; z-index: 2; top: clamp(20px, 3vw, 42px); left: clamp(24px, 5vw, 72px); display: flex; align-items: center; gap: 9px; color: #fff7eb; font-family: "Barlow Condensed", sans-serif; font-size: 19px; font-weight: 900; letter-spacing: .03em; text-transform: uppercase; }
+.landing-brand img { width: 28px; height: 28px; }
+.landing-brand b { color: #ffce7a; }
 
 .login-link {
   position: absolute;
@@ -205,7 +198,8 @@ h1 {
 .student-dashboard { min-height: 100svh; color: #1b2340; background: #fff7eb; animation: dashboard-arrive 650ms ease both; }
 @keyframes dashboard-arrive { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 .dashboard-nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px max(24px, calc((100vw - 1180px) / 2)); border-bottom: 2px solid #1b2340; }
-.dashboard-brand { font-family: "Barlow Condensed", sans-serif; font-size: 25px; font-weight: 900; text-transform: uppercase; }
+.dashboard-brand { display: flex; align-items: center; gap: 8px; font-family: "Barlow Condensed", sans-serif; font-size: 25px; font-weight: 900; text-transform: uppercase; }
+.dashboard-brand img { width: 29px; height: 29px; }
 .dashboard-brand span { color: #e8503a; }
 .dashboard-nav > div:last-child { display: flex; align-items: center; gap: 13px; }
 .student-email { max-width: 250px; overflow: hidden; font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
@@ -276,6 +270,9 @@ h1 {
   margin: 0 auto;
   padding: 23px 0;
 }
+.course-nav-start { display: flex; align-items: center; gap: 18px; }
+.course-back { border: 0; padding: 0; color: #5c6071; background: transparent; font-size: 14px; font-weight: 800; }
+.course-back:hover { color: #e8503a; }
 
 .brand-button,
 .back-to-start {
@@ -290,6 +287,8 @@ h1 {
 }
 
 .brand-button span { color: #e8503a; }
+.brand-button { display: inline-flex; align-items: center; gap: 8px; }
+.brand-button img { width: 30px; height: 30px; }
 
 .nav-question {
   padding: 10px 15px;
@@ -441,12 +440,17 @@ h1 {
     font-size: 21px;
   }
 
-  .intro-label { top: 22px; left: 20px; font-size: 13px; }
+  .intro-label { display: none; }
+  .landing-brand { top: 20px; left: 20px; font-size: 16px; }
+  .landing-brand img { width: 25px; height: 25px; }
   .login-link { top: 20px; right: 20px; font-size: 12px; }
 
   .course-nav, .course-section { width: min(100% - 40px, 1180px); }
   .course-nav { padding: 18px 0; }
-  .brand-button { font-size: 21px; }
+  .course-nav-start { gap: 10px; }
+  .course-back { font-size: 12px; }
+  .brand-button { font-size: 18px; }
+  .brand-button img { width: 24px; height: 24px; }
   .nav-question { padding: 8px 11px; font-size: 12px; }
   .course-hero { min-height: 63svh; padding: 74px 20px 54px; }
   .course-hero h1 { font-size: clamp(44px, 13vw, 62px); }

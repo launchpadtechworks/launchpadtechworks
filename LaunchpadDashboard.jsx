@@ -273,7 +273,7 @@ function SecureStudentDashboard({ session, onSignOut }) {
   }
 
   return <main className="student-dashboard">
-    <header className="dashboard-nav"><div className="dashboard-brand">Launchpad <span>Techworks</span></div><div><span className="student-email">{studentName}</span><button onClick={onSignOut}>Log out</button></div></header>
+      <header className="dashboard-nav"><div className="dashboard-brand"><img src="/launchpad-techworks-symbol.svg" alt="" />Launchpad <span>Techworks</span></div><div><span className="student-email">{studentName}</span><button onClick={onSignOut}>Log out</button></div></header>
     <section className="dashboard-welcome"><p className="eyebrow">Your assigned learning path</p><h1>Hey, {studentName}.<br /><em>{profile ? DOMAIN_LABELS[profile.assigned_domain] ?? profile.assigned_domain : "Your space is preparing."}</em></h1><p>You can view only your assigned domain. Complete the notes to unlock each quiz.</p>{profile && <div className="learning-status"><span>🔒 One domain</span><span>📅 Day {activeDay} of 13</span><span>{notesComplete ? "✓ Notes complete" : "• Notes first"}</span></div>}</section>
     <section className="dashboard-content">
       <aside className="lesson-rail" aria-label="Course days">{days.map((lesson) => {
@@ -309,7 +309,10 @@ function CoursePage({ onBack }) {
   return (
     <main className="course-page">
       <header className="course-nav">
-        <button className="brand-button" onClick={onBack}>Launchpad <span>Techworks</span></button>
+        <div className="course-nav-start">
+          <button className="course-back" onClick={onBack}>← Back</button>
+          <button className="brand-button" onClick={onBack}><img src="/launchpad-techworks-symbol.svg" alt="" />Launchpad <span>Techworks</span></button>
+        </div>
         <a href="#questions" className="nav-question">Questions first</a>
       </header>
 
@@ -428,6 +431,12 @@ export default function LaunchpadDashboard() {
   }, []);
 
   useEffect(() => {
+    const onPopState = () => setShowCourses(window.history.state?.launchpadView === "courses");
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => setSession(nextSession));
     return () => subscription.unsubscribe();
@@ -450,7 +459,17 @@ export default function LaunchpadDashboard() {
 
   if (showLogin) return <LoginScreen onClose={() => setShowLogin(false)} onSuccess={(nextSession) => { setIsUnlocking(true); setSession(nextSession); }} />;
 
-  if (showCourses) return <CoursePage onBack={() => setShowCourses(false)} />;
+  function openCourses() {
+    window.history.pushState({ launchpadView: "courses" }, "");
+    setShowCourses(true);
+  }
+
+  function closeCourses() {
+    if (window.history.state?.launchpadView === "courses") window.history.back();
+    else setShowCourses(false);
+  }
+
+  if (showCourses) return <CoursePage onBack={closeCourses} />;
 
   return (
     <main className={`landing-page ${isRevealed ? "is-revealed" : ""}`}>
@@ -464,13 +483,15 @@ export default function LaunchpadDashboard() {
       </div>
       <div className="hero-shade" aria-hidden="true" />
 
+      <div className="landing-brand" aria-label="Launchpad Techworks"><img src="/launchpad-techworks-symbol.svg" alt="" /><span>Launchpad <b>Techworks</b></span></div>
+
       <section className="hero-content" aria-labelledby="hero-heading">
         <p className="eyebrow">Launchpad Techworks</p>
         <h1 id="hero-heading">Don&apos;t let the syllabus<br />take you down.</h1>
         <p className="subheadline">Get your basics clear first. Build <span>strong roots.</span></p>
       </section>
 
-      <button className="start-button" onClick={() => setShowCourses(true)}>
+      <button className="start-button" onClick={openCourses}>
         Start Now <span aria-hidden="true">↗</span>
       </button>
       <button className="login-link" onClick={() => setShowLogin(true)}>Student login</button>
